@@ -1,12 +1,11 @@
 const path = require('path');
 
 const config = {
-    // common properties for all configs
-};
-
-const coreConfig = Object.assign({}, config, {
-    entry: './index.ts',
     devtool: 'inline-source-map',
+    entry: {
+        main: "./index.ts",
+        polyfill: ['./node_modules/custom-elements/dist/CustomElements.min.js', "./node_modules/custom-elements/dist/MutationObserver.min.js"]
+    },
     module: {
         rules: [
             {
@@ -16,30 +15,14 @@ const coreConfig = Object.assign({}, config, {
             }
         ]
     },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].bundle.js'
+    },
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    }
-});
+    target: "web"
+};
 
-const polyfillConfig = Object.assign({}, config, {
-    entry: ['./node_modules/custom-elements/dist/CustomElements.min.js', "./node_modules/custom-elements/dist/MutationObserver.min.js"],
-    module: {
-        rules: []
-    },
-    resolve: {
-        extensions: ['.js']
-    },
-    output: {
-        filename: 'polyfill.js',
-        path: path.resolve(__dirname, 'dist')
-    }
-});
-
-module.exports = [
-    coreConfig,
-    polyfillConfig
-];
+module.exports = config;
