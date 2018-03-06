@@ -1,0 +1,27 @@
+{
+  "name": "simple-components",
+  "version": "0.0.0",
+  "description": "Simple web components",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vlad160/Simple-Components.git"
+  },
+  "author": "Uladzislau.Nestser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vlad160/Simple-Components/issues"
+  },
+  "homepage": "https://github.com/Vlad160/Simple-Components#readme",
+  "dependencies": {
+    "typescript": "^2.7.2",
+    "webpack": "^4.1.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^4.0.1",
+    "webpack-cli": "^2.0.10"
+  }
+}
