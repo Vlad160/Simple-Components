@@ -1,8 +1,11 @@
 const path = require('path');
 
-module.exports = {
-    entry: './src/index.ts',
+const config = {
     devtool: 'inline-source-map',
+    entry: {
+        main: "./index.ts",
+        polyfill: ['./node_modules/custom-elements/dist/CustomElements.min.js', "./node_modules/custom-elements/dist/MutationObserver.min.js"]
+    },
     module: {
         rules: [
             {
@@ -12,11 +15,14 @@ module.exports = {
             }
         ]
     },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].bundle.js'
+    },
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    }
+    target: "web"
 };
+
+module.exports = config;
