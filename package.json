@@ -4,9 +4,9 @@
   "description": "Simple web components",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/webpack --mode development",
-    "watch": "./node_modules/.bin/webpack --watch --mode development",
-    "build:prod": "./node_modules/.bin/webpack --mode production"
+    "build:dev": "webpack --mode development",
+    "build:watch": "webpack --watch --mode development",
+    "build:prod": "webpack --mode production"
   },
   "repository": {
     "type": "git",
