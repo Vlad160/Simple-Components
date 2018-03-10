@@ -5,6 +5,7 @@ export class Test extends SimpleComponent {
 
     @property() test: string = 'Hello world';
     @property() bigProp: string = 'asas';
+    @property({attribute: false, type: 'array'}) items: any[] = [];
 
     constructor() {
         super();

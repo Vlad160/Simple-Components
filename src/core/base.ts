@@ -4,28 +4,35 @@ import {toCamelCase, toKebabCase} from "./utils";
 const bindings: string = '__bindings__';
 const observedAttributes: string = 'observedAttributes';
 
+export interface IComponentProperty {
+    type: string;
+    attribute: boolean;
+}
+
 export function Component<T extends Function>(selector: string, options: ElementDefinitionOptions = <ElementDefinitionOptions>{}): (target: T) => void {
     return function (target: T) {
         if (customElements.get(selector)) {
             throw new Error(`Element ${selector} has already been defined`)
         } else {
             target.constructor.prototype[observedAttributes] = [];
-            target.prototype[bindings] && target.prototype[bindings].forEach((prop: string) => {
-                target.constructor[observedAttributes].push(toKebabCase(prop));
-                Object.defineProperty(target.prototype, prop, createPropertyBinding(target, prop))
+            target.prototype[bindings] && target.prototype[bindings].forEach((prop) => {
+                if (prop.options.attribute) {
+                    target.constructor[observedAttributes].push(toKebabCase(prop.key));
+                }
+                Object.defineProperty(target.prototype, prop.key, createPropertyBinding(target, prop.key))
             });
             customElements.define(selector, target, options)
         }
     }
 }
 
-export function property(): Function {
+export function property(options: IComponentProperty = {type: 'string', attribute: true}): Function {
     return function (target: any, key: string): void {
         if (!target[bindings]) {
             target[bindings] = [];
         }
         if (!target[bindings][key]) {
-            target[bindings].push(key);
+            target[bindings].push({key, options});
         }
     }
 }
@@ -62,7 +69,7 @@ export abstract class SimpleComponent extends HTMLElement {
 
     private attributeChangedCallback(key, oldValue, newValue) {
         const prop: string = toCamelCase(key);
-        if (newValue !== oldValue && this[bindings].includes(prop)) {
+        if (newValue !== oldValue) {
             this[prop] = newValue;
             const change = {
                 [prop]: {oldValue, newValue}
@@ -71,7 +78,7 @@ export abstract class SimpleComponent extends HTMLElement {
         }
     }
 
-    protected renderCallback(): void {
+    private renderCallback(): void {
         if (this.connected) {
             this.beforeRender();
             this.render();
