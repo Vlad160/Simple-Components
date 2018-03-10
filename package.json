@@ -20,12 +20,12 @@
   "homepage": "https://github.com/Vlad160/Simple-Components#readme",
   "dependencies": {
     "custom-elements": "^1.0.2",
-    "lodash": "^4.17.5",
-    "typescript": "^2.7.2"
+    "lodash": "^4.17.5"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.104",
     "ts-loader": "^4.0.1",
+    "typescript": "^2.7.2",
     "webpack-cli": "^2.0.10",
     "webpack": "^4.1.0",
     "webpack-dev-server": "^3.1.0"
