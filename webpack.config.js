@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
     devtool: 'inline-source-map',
@@ -19,6 +20,12 @@ const config = {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].bundle.js'
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Simple-Components Demo',
+            favicon: './src/assets/favicon.ico'
+        })
+    ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
