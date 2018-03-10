@@ -23,7 +23,8 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Simple-Components Demo',
-            favicon: './src/assets/favicon.ico'
+            favicon: './src/assets/favicon.ico',
+            template: './index.html'
         })
     ],
     resolve: {
