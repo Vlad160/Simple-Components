@@ -1,1 +1,2 @@
-export * from './src/common/base'
+export * from './src/core/base'
+export * from './src/components/index'

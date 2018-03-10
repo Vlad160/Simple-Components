@@ -34,35 +34,71 @@ export function createPropertyBinding(target: any, key: string): PropertyDescrip
         },
         set(value: any) {
             this[`_${key}`] = value;
-            this.render();
+            this.renderCallback();
         }
     }
 }
 
-@Component('simple-element')
 export class SimpleComponent extends HTMLElement {
 
-    @property()
-    hello: string = 'abc';
+    shadow: ShadowRoot;
+    connected: boolean = false;
 
     constructor() {
         super();
-        this.constructor[observedAttributes].forEach((prop: string) => {
-            this.setAttribute(prop, this[prop]);
-        });
+        this.shadow = this.attachShadow({mode: 'open'});
     }
 
     protected connectedCallback(): void {
-        this.innerHTML = `<p>I\'m here!<div>Attribute value: ${this.hello}</div></p>`
+        this.connected = true;
+        this.constructor[observedAttributes].forEach((prop: string) => this.setAttribute(prop, this[prop]));
+        this.onInit();
+        this.renderCallback();
     }
 
-    protected attributeChangedCallback(name, oldValue, newValue) {
+    private attributeChangedCallback(name, oldValue, newValue) {
         if (newValue !== oldValue) {
             this[name] = newValue;
+            const change = {
+                [name]: {oldValue, newValue}
+            };
+            this.onChange(change);
+        }
+    }
+
+    protected renderCallback(): void {
+        if (this.connected) {
+            this.beforeRender();
+            this.render();
+            this.afterRender();
         }
     }
 
     protected render(): void {
-        this.connectedCallback();
+
+    }
+
+    protected onInit(): void {
+
+    }
+
+    protected beforeRender() {
+
+    }
+
+    protected onChange(change: any) {
+
+    }
+
+    protected afterRender(): void {
+    }
+
+    protected beforeDestroy(): void {
+
+    }
+
+    private disconnectedCallback(): void {
+        this.connected = false;
+        this.beforeDestroy();
     }
 }
