@@ -1,12 +1,19 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const entryObj = { // order matters for properties
+    polyfill: ['./node_modules/custom-elements/dist/CustomElements.min.js', "./node_modules/custom-elements/dist/MutationObserver.min.js"],
+    main: "./index.ts"
+};
+
 const config = {
-    devtool: 'inline-source-map',
-    entry: {
-        main: "./index.ts",
-        polyfill: ['./node_modules/custom-elements/dist/CustomElements.min.js', "./node_modules/custom-elements/dist/MutationObserver.min.js"]
+    devServer: {
+        contentBase: path.join(__dirname, "dist"),
+        compress: true,
+        port: 3228
     },
+    devtool: 'inline-source-map',
+    entry: entryObj,
     module: {
         rules: [
             {
