@@ -1,3 +1,6 @@
+import {IChange} from "./lifecycle";
+import {toCamelCase, toKebabCase} from "./utils";
+
 export const bindings: string = '__bindings__';
 export const observedAttributes: string = 'observedAttributes';
 
@@ -8,7 +11,7 @@ export function Component<T extends Function>(selector: string, options: Element
         } else {
             target.constructor.prototype[observedAttributes] = [];
             target.prototype[bindings].forEach((prop: string) => {
-                target.constructor[observedAttributes].push(prop);
+                target.constructor[observedAttributes].push(toKebabCase(prop));
                 Object.defineProperty(target.prototype, prop, createPropertyBinding(target, prop))
             });
             customElements.define(selector, target, options)
@@ -43,6 +46,7 @@ export class SimpleComponent extends HTMLElement {
 
     shadow: ShadowRoot;
     connected: boolean = false;
+    isSimpleComponent = true;
 
     constructor() {
         super();
@@ -51,16 +55,17 @@ export class SimpleComponent extends HTMLElement {
 
     protected connectedCallback(): void {
         this.connected = true;
-        this.constructor[observedAttributes].forEach((prop: string) => this.setAttribute(prop, this[prop]));
+        this.constructor[observedAttributes].forEach((prop: string) => this.setAttribute(prop, this[toCamelCase(prop)]));
         this.onInit();
         this.renderCallback();
     }
 
-    private attributeChangedCallback(name, oldValue, newValue) {
-        if (newValue !== oldValue) {
-            this[name] = newValue;
+    private attributeChangedCallback(key, oldValue, newValue) {
+        const prop: string = toCamelCase(key);
+        if (newValue !== oldValue && this[bindings].includes(prop)) {
+            this[prop] = newValue;
             const change = {
-                [name]: {oldValue, newValue}
+                [prop]: {oldValue, newValue}
             };
             this.onChange(change);
         }
@@ -82,11 +87,11 @@ export class SimpleComponent extends HTMLElement {
 
     }
 
-    protected beforeRender() {
+    protected beforeRender(): void {
 
     }
 
-    protected onChange(change: any) {
+    protected onChange(change: IChange): void {
 
     }
 

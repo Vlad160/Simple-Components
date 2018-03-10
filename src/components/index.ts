@@ -1,1 +1,1 @@
-export * from './simple'
+export * from './test'
