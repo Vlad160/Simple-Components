@@ -1,8 +1,8 @@
-import {IChange} from "./lifecycle";
+import {AttributeValueChange} from "./lifecycle";
 import {toCamelCase, toKebabCase} from "./utils";
 
-export const bindings: string = '__bindings__';
-export const observedAttributes: string = 'observedAttributes';
+const bindings: string = '__bindings__';
+const observedAttributes: string = 'observedAttributes';
 
 export function Component<T extends Function>(selector: string, options: ElementDefinitionOptions = <ElementDefinitionOptions>{}): (target: T) => void {
     return function (target: T) {
@@ -10,7 +10,7 @@ export function Component<T extends Function>(selector: string, options: Element
             throw new Error(`Element ${selector} has already been defined`)
         } else {
             target.constructor.prototype[observedAttributes] = [];
-            target.prototype[bindings].forEach((prop: string) => {
+            target.prototype[bindings] && target.prototype[bindings].forEach((prop: string) => {
                 target.constructor[observedAttributes].push(toKebabCase(prop));
                 Object.defineProperty(target.prototype, prop, createPropertyBinding(target, prop))
             });
@@ -42,7 +42,7 @@ export function createPropertyBinding(target: any, key: string): PropertyDescrip
     }
 }
 
-export class SimpleComponent extends HTMLElement {
+export abstract class SimpleComponent extends HTMLElement {
 
     shadow: ShadowRoot;
     connected: boolean = false;
@@ -79,9 +79,7 @@ export class SimpleComponent extends HTMLElement {
         }
     }
 
-    protected render(): void {
-
-    }
+    abstract render(): void;
 
     protected onInit(): void {
 
@@ -91,7 +89,7 @@ export class SimpleComponent extends HTMLElement {
 
     }
 
-    protected onChange(change: IChange): void {
+    protected onChange(change: AttributeValueChange): void {
 
     }
 

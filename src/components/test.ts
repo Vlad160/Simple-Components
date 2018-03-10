@@ -1,5 +1,4 @@
-import {Component, property, SimpleComponent} from "../core/base";
-import {IChange} from "../core";
+import {AttributeValueChange, Component, property, SimpleComponent} from "../core";
 
 @Component('smpl-test')
 export class Test extends SimpleComponent {
@@ -15,7 +14,7 @@ export class Test extends SimpleComponent {
         this.shadow.innerHTML = `I\'m here with attribute: ${this.test}`;
     }
 
-    onChange(change: IChange): void {
+    onChange(change: AttributeValueChange): void {
         console.log(change);
         console.log(this.bigProp);
     }
