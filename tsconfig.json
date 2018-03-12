@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "module": "commonjs",
     "target": "es2015",
     "moduleResolution": "node",
@@ -12,12 +13,14 @@
     "lib": [
       "es6",
       "dom"
-    ]
-  },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "src/**/*/*.ts"
-  ]
+    ],
+    "paths": {
+      "@core": [
+        "src/core/index.ts"
+      ],
+      "@components": [
+        "src/components/index.ts"
+      ]
+    }
+  }
 }

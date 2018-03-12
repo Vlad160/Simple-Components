@@ -1,5 +1,4 @@
-import {AttributeValueChange} from "./lifecycle";
-import {toCamelCase, toKebabCase} from "./utils";
+import { AttributeValueChange, toCamelCase, toKebabCase } from '@core';
 
 const bindings: string = '__bindings__';
 const observedAttributes: string = 'observedAttributes';
@@ -50,25 +49,16 @@ export abstract class SimpleComponent extends HTMLElement {
 
     constructor() {
         super();
-        this.shadow = this.attachShadow({mode: 'open'});
+        this.shadow = this.attachShadow({ mode: 'open' });
     }
+
+    abstract render(): void;
 
     protected connectedCallback(): void {
         this.connected = true;
         this.constructor[observedAttributes].forEach((prop: string) => this.setAttribute(prop, this[toCamelCase(prop)]));
         this.onInit();
         this.renderCallback();
-    }
-
-    private attributeChangedCallback(key, oldValue, newValue) {
-        const prop: string = toCamelCase(key);
-        if (newValue !== oldValue && this[bindings].includes(prop)) {
-            this[prop] = newValue;
-            const change = {
-                [prop]: {oldValue, newValue}
-            };
-            this.onChange(change);
-        }
     }
 
     protected renderCallback(): void {
@@ -78,8 +68,6 @@ export abstract class SimpleComponent extends HTMLElement {
             this.afterRender();
         }
     }
-
-    abstract render(): void;
 
     protected onInit(): void {
 
@@ -98,6 +86,17 @@ export abstract class SimpleComponent extends HTMLElement {
 
     protected beforeDestroy(): void {
 
+    }
+
+    private attributeChangedCallback(key, oldValue, newValue) {
+        const prop: string = toCamelCase(key);
+        if (newValue !== oldValue && this[bindings].includes(prop)) {
+            this[prop] = newValue;
+            const change = {
+                [prop]: { oldValue, newValue }
+            };
+            this.onChange(change);
+        }
     }
 
     private disconnectedCallback(): void {

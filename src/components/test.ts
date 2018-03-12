@@ -1,4 +1,4 @@
-import {AttributeValueChange, Component, property, SimpleComponent} from "../core";
+import { AttributeValueChange, Component, property, SimpleComponent } from '@core';
 
 @Component('smpl-test')
 export class Test extends SimpleComponent {
