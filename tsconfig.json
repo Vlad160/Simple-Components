@@ -13,11 +13,14 @@
     "lib": [
       "es6",
       "dom"
-    ]
-  },
-  "paths": {
-    "@src/*": [
-      "src/*"
-    ]
+    ],
+    "paths": {
+      "@core": [
+        "src/core/index.ts"
+      ],
+      "@components": [
+        "src/components/index.ts"
+      ]
+    }
   }
 }

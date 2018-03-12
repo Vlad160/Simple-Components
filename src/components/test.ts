@@ -1,21 +1,21 @@
-import { AttributeValueChange, Component, property, SimpleComponent } from '../core';
+import { AttributeValueChange, Component, property, SimpleComponent } from '@core';
 
 @Component('smpl-test')
 export class Test extends SimpleComponent {
 
-	@property() test: string = 'Hello world';
-	@property() bigProp: string = 'asas';
+    @property() test: string = 'Hello world';
+    @property() bigProp: string = 'asas';
 
-	constructor() {
-		super();
-	}
+    constructor() {
+        super();
+    }
 
-	render(): void {
-		this.shadow.innerHTML = `I\'m here with attribute: ${this.test}`;
-	}
+    render(): void {
+        this.shadow.innerHTML = `I\'m here with attribute: ${this.test}`;
+    }
 
-	onChange(change: AttributeValueChange): void {
-		console.log(change);
-		console.log(this.bigProp);
-	}
+    onChange(change: AttributeValueChange): void {
+        console.log(change);
+        console.log(this.bigProp);
+    }
 }

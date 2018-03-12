@@ -1,14 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const entryObj = { // order matters for properties
-    polyfill: ['./node_modules/custom-elements/dist/CustomElements.min.js', "./node_modules/custom-elements/dist/MutationObserver.min.js"],
-    main: "./index.ts"
+    polyfill: ['./node_modules/custom-elements/dist/CustomElements.min.js', './node_modules/custom-elements/dist/MutationObserver.min.js'],
+    main: './index.ts'
 };
 
 const config = {
     devServer: {
-        contentBase: path.join(__dirname, "dist"),
+        contentBase: path.join(__dirname, 'dist'),
         compress: true,
         port: 3228
     },
@@ -35,9 +36,10 @@ const config = {
         })
     ],
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js'],
+        plugins: [new TSConfigPathsPlugin({ configFile: './tsconfig.json' })]
     },
-    target: "web"
+    target: 'web'
 };
 
 module.exports = config;
