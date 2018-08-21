@@ -1,4 +1,5 @@
 import { AttributeValueChange, toCamelCase, toKebabCase } from '@core';
+import { render } from './base-new';
 
 const bindings: string = '__bindings__';
 const observedAttributes: string = 'observedAttributes';
@@ -43,16 +44,21 @@ export function createPropertyBinding(target: any, key: string): PropertyDescrip
 
 export abstract class SimpleComponent extends HTMLElement {
 
-    shadow: ShadowRoot;
+    renderRoot: Element | ShadowRoot;
     connected: boolean = false;
     isSimpleComponent = true;
 
     constructor() {
         super();
-        this.shadow = this.attachShadow({ mode: 'open' });
+        this.renderRoot = this.children[0];
     }
 
-    abstract render(): void;
+    static render(vdom, parent) {
+        const instance = document.createElement(vdom.type);
+        return render(instance.render(), parent);
+    }
+
+    abstract render(): any;
 
     protected connectedCallback(): void {
         this.connected = true;

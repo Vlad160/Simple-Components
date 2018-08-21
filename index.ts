@@ -1,2 +1,2 @@
-export * from './src/core/index'
-export * from './src/components/index'
+export * from '@core'
+export * from '@components'

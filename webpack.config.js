@@ -11,7 +11,7 @@ const config = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
-        port: 3228
+        port: 3229
     },
     devtool: 'inline-source-map',
     entry: entryObj,

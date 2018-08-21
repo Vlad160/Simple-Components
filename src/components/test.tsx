@@ -1,4 +1,4 @@
-import { AttributeValueChange, Component, property, SimpleComponent } from '@core';
+import { AttributeValueChange, Component, property, SimpleComponent, h, render } from '@core';
 
 @Component('smpl-test')
 export class Test extends SimpleComponent {
@@ -10,8 +10,10 @@ export class Test extends SimpleComponent {
         super();
     }
 
-    render(): void {
-        this.shadow.innerHTML = `I\'m here with attribute: ${this.test}`;
+    render(): any {
+        return (
+            <div>Hello world! </div>
+        )
     }
 
     onChange(change: AttributeValueChange): void {
@@ -19,3 +21,5 @@ export class Test extends SimpleComponent {
         console.log(this.bigProp);
     }
 }
+
+render(<smpl-test />, document.body);
