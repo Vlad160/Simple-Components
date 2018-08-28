@@ -1,10 +1,11 @@
-import { AttributeValueChange, Component, property, SimpleComponent, h, render } from '@core';
+import { AttributeValueChange, Component, property, SimpleComponent, h, render, withShadowRoot } from '@core';
+import { webactElement, WebactComponent, prop } from '../core/core';
 
-@Component('smpl-test')
-export class Test extends SimpleComponent {
+@webactElement('smpl-test')
+export class Test extends WebactComponent {
 
-    @property() test: string = 'Hello world';
-    @property() bigProp: string = 'asas';
+    @prop() test: string = 'Hello world';
+    @prop() bigProp: string = 'asas';
 
     constructor() {
         super();
@@ -14,11 +15,6 @@ export class Test extends SimpleComponent {
         return (
             <div>Hello world! </div>
         )
-    }
-
-    onChange(change: AttributeValueChange): void {
-        console.log(change);
-        console.log(this.bigProp);
     }
 }
 

@@ -1,6 +1,7 @@
 import { SimpleComponent } from './base';
+import { WebactComponent } from './core';
 
-export function withShadowRoot<T extends HTMLElement>(constructor: any) {
+export function withShadowRoot<T extends HTMLElement>(constructor: any): any {
     return class extends constructor {
         renderRoot = this.attachShadow({ mode: 'open' });
     }
@@ -18,14 +19,17 @@ export function h(type: string, props: any, ...children: Array<any>): IVirtualNo
 }
 
 export function render(vdom: IVirtualNode | string | number | boolean, parent: HTMLElement = null) {
-    console.log(vdom);
     const mount = parent ? (el) => parent.appendChild(el) : (el) => el;
     if (typeof vdom === 'string' || typeof vdom === 'number') {
         return mount(document.createTextNode(vdom.toString()))
     } else if (typeof vdom === 'boolean' || vdom == null) {
         return mount(document.createTextNode(''))
     } else if (typeof vdom === 'object' && customElements.get(vdom.type)) {
-        return SimpleComponent.render(vdom, parent);
+        const instance = document.createElement(vdom.type);
+        const renderRoot = parent.appendChild(instance);
+        if (instance['render']) {
+            return render((instance as WebactComponent).render(), renderRoot);
+        }
     }
     else if (typeof vdom == 'object' && typeof vdom.type == 'string') {
         const dom = mount(document.createElement(vdom.type));
@@ -42,10 +46,10 @@ export function render(vdom: IVirtualNode | string | number | boolean, parent: H
 const setAttribute = (dom, key, value) => {
     if (typeof value == 'function' && key.startsWith('on')) {
         const eventType = key.slice(2).toLowerCase();
-        dom.__gooactHandlers = dom.__gooactHandlers || {};
-        dom.removeEventListener(eventType, dom.__gooactHandlers[eventType]);
-        dom.__gooactHandlers[eventType] = value;
-        dom.addEventListener(eventType, dom.__gooactHandlers[eventType]);
+        dom.__eventHandlers = dom.__eventHandlers || {};
+        dom.removeEventListener(eventType, dom.__eventHandlers[eventType]);
+        dom.__eventHandlers[eventType] = value;
+        dom.addEventListener(eventType, dom.__eventHandlers[eventType]);
     } else if (key == 'checked' || key == 'value' || key == 'className') {
         dom[key] = value;
     } else if (key == 'style' && typeof value == 'object') {
